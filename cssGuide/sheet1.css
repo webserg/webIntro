@@ -1,4 +1,17 @@
 h1 {color: red;}
 h2 {color: maroon; background: white;}
-h3 {color: white; background: black;
-    font: medium Helvetica;}
+h3 {color: white; background: black; font: medium Helvetica;}
+h1, h4 {color: silver; background: white;}
+.warning {font-weight: bold;}
+p.warning {color: red;}
+span.warning {font-style: italic;}
+.urgent {font-style: italic;}
+.warning.urgent {background: silver;}
+/*//This rule applies boldface text to any element whose id attribute has a value of first-para.*/
+#first-para {font-weight: bold;}
+h1 em {color: gray;} /* every em */
+
+
+
+
+
