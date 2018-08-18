@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello World</title>
+    <link rel="stylesheet" type="text/css" href="sortedMap.css" media="all"/>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="sortedMap.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+    class Square extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                entry: null,
+            };
+        }
+
+        render() {
+            return (
+                <div className="border">{this.props.entry.name}
+                    <div className="edit relative2" onClick={() => alert('click')}>
+                        x
+                    </div>
+                </div>
+            );
+        }
+    }
+
+
+    class SquareList extends React.Component {
+        constructor(props) {
+            super(props);
+        }
+
+        render() {
+            let i, j, temparray = [], chunk = 3;
+            for (i = 0, j = this.props.list.length; i < j; i += chunk) {
+                temparray.push(this.props.list.slice(i, i + chunk));
+            }
+            let trs = temparray.map((item, index) => {
+                return (
+                    <tr key={index}>
+                        {item.map(entry => {
+                            return (<td><Square entry={entry}/></td>);
+                        })}
+                    </tr>
+                );
+            });
+
+            return (
+                <table>
+                    {trs}
+                </table>
+            );
+        }
+    }
+
+
+    class Board extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                squares: mapOfApps,
+                isAdmin: true,
+            };
+        }
+
+        renderSquare(i) {
+            return <Square value={this.state.squares[i]}
+                           onClick={() => this.handleClick(i)}/>;
+        }
+
+        handleClick(i) {
+            alert('click');
+        }
+
+        render() {
+            const listItems = keys.map(k =>
+                <SquareList list={mapOfApps.get(k)}/>
+            );
+
+            return (
+                <div>
+                    {listItems}
+                </div>
+            )
+        }
+    }
+
+
+    ReactDOM.render(
+        <Board/>,
+        document.getElementById('root')
+    );
+
+
+</script>
+<!--
+    Note: this page is a great way to try React but it's not suitable for production.
+It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+    Read this section for a production-ready setup with JSX:
+http://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
+
+    In a larger project, you can use an integrated toolchain that includes JSX instead:
+    http://reactjs.org/docs/create-a-new-react-app.html
+
+        You can also use React without JSX, in which case you can remove Babel:
+    https://reactjs.org/docs/react-without-jsx.html
+        -->
+</body>
+</html>

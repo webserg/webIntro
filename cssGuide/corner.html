@@ -4,20 +4,54 @@
     <meta charset=utf-8/>
     <title>Test</title>
     <style>
-        #foo {
+        .foo {
             position: fixed;
             top: 0;
             right: 0;
         }
-        #border{
+
+        .border {
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .outer {
+            position: relative;
+            overflow: hidden;
+            width: 150px;
+            height: 100px
+        }
+
+        .name {
+            position: absolute;
+            right: 0;
+            border-width: 1px;
+            border-style: outset;
+        }
+        .edit{
+            float: right;
+            margin-top: -35px;
+        }
+        .relative2 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: white;
             border-width: 1px;
             border-style: solid;
         }
     </style>
 </head>
 <body>
-<div id="border"> bla blas
-    <div id="foo" onclick="window.alert('click')">x</div>
+<div class="border"> bla blas
+    <div class="foo" onclick="window.alert('click')">x</div>
 </div>
+
+
+<div class="outer border">qqqqq
+    <div class="relative2" onclick="window.alert('click')">x</div>
+</div>
+
+
 </body>
 </html>
