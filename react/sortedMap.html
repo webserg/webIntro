@@ -15,27 +15,88 @@
 <div id="root"></div>
 <script type="text/babel">
 
-    class Square extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                entry: null,
-            };
-        }
 
-        render() {
+
+    function EditButton(props) {
+        if (isAdmin) {
             return (
-                <div className="border">{this.props.entry.name}
-                    <div className="edit relative2" onClick={() => alert('click')}>
-                        x
-                    </div>
+                <div className="edit relative2" onClick={props.onClick}>
+                    ✖
                 </div>
             );
         }
     }
 
+    class SquareAppEntry extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                entry: props.entry,
+                showPopup: false,
+            };
+        }
 
-    class SquareList extends React.Component {
+        togglePopup() {
+            this.setState({
+                showPopup: !this.state.showPopup
+            });
+        }
+
+        render() {
+            return (
+                <div>
+                    <div className="border outer">{this.state.entry.name}
+                        <EditButton onClick={this.togglePopup.bind(this)}/>
+                    </div>
+                    {this.state.showPopup ?
+                        <Popup
+                            closePopup={this.togglePopup.bind(this)}
+                        />
+                        : null
+                    }
+                </div>
+            );
+        }
+
+    }
+
+
+
+    class NameForm extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {value: ''};
+
+            this.handleChange = this.handleChange.bind(this);
+            this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleChange(event) {
+            this.setState({value: event.target.value});
+        }
+
+        handleSubmit(event) {
+            alert('A name was submitted: ' + this.state.value);
+            event.preventDefault();
+        }
+
+        render() {
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Name:
+                        <input type="text" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+            );
+        }
+    }
+
+
+
+
+    class LetterList extends React.Component {
         constructor(props) {
             super(props);
         }
@@ -49,7 +110,7 @@
                 return (
                     <tr key={index}>
                         {item.map(entry => {
-                            return (<td><Square entry={entry}/></td>);
+                            return (<td><SquareAppEntry entry={entry}/></td>);
                         })}
                     </tr>
                 );
@@ -64,27 +125,17 @@
     }
 
 
-    class Board extends React.Component {
+    class AlphabetList extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
                 squares: mapOfApps,
-                isAdmin: true,
             };
-        }
-
-        renderSquare(i) {
-            return <Square value={this.state.squares[i]}
-                           onClick={() => this.handleClick(i)}/>;
-        }
-
-        handleClick(i) {
-            alert('click');
         }
 
         render() {
             const listItems = keys.map(k =>
-                <SquareList list={mapOfApps.get(k)}/>
+                <LetterList list={mapOfApps.get(k)}/>
             );
 
             return (
@@ -95,9 +146,23 @@
         }
     }
 
+    class Popup extends React.Component {
+        render() {
+            return (
+                <div className='popup'>
+                    <div className='popup_inner'>
+                        <NameForm/>
+                        <button onClick={this.props.closePopup}>close me</button>
+                    </div>
+                </div>
+            );
+        }
+    }
+
+
 
     ReactDOM.render(
-        <Board/>,
+        <AlphabetList/>,
         document.getElementById('root')
     );
 
